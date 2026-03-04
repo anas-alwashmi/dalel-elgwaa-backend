@@ -57,6 +57,8 @@ class DashboardPropertyResource extends JsonResource
                 ];
             })->toArray(),
             'added_by' => $this->addedBy->name ?? null,
+            'owner_name' => $this->owner_name ?? null,
+            'owner_phone' => $this->owner_phone ?? null,
         ];
     }
 }

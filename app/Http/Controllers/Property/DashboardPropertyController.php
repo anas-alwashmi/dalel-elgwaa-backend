@@ -19,7 +19,14 @@ class DashboardPropertyController extends Controller
 
     public function index()
     {
-        $properties = Property::paginate(10);
+        $user = auth('sanctum')->user();
+
+        if ($user && $user->hasRole('super_admin')) {
+            $properties = Property::paginate(10);
+        } else {
+            $properties = Property::where('user_id', $user->id ?? 0)->paginate(10);
+        }
+
         return DashboardPropertyResource::collection($properties);
     }
 
@@ -87,7 +94,7 @@ class DashboardPropertyController extends Controller
             $property->owner_phone = $request->input('owner_phone');
             $property->owner_description = $request->input('owner_description');
             $property->owner_address = $request->input('owner_address');
-            $property->user_id = auth()->id();
+            $property->user_id = auth('sanctum')->id();
 
             if ($request->hasFile('main_image')) {
                 $property->addMedia($request->file('main_image'))->toMediaCollection('main_image');
