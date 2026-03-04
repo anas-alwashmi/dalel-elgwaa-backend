@@ -41,8 +41,6 @@ class DashboardPropertyResource extends JsonResource
             'type_id' => $this->type_id ?? null,
             'type' => $this->type->name ?? 'UnKnown',
             'link' => $this->link,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
             'main_image' => $this->getFirstMediaUrl('main_image'),
             'gallery' => $this->getMedia('gallery')->map(function ($media) {
                 return $media->getUrl();
@@ -56,9 +54,6 @@ class DashboardPropertyResource extends JsonResource
                     'image' => $partner->getFirstMediaUrl(),
                 ];
             })->toArray(),
-            'added_by' => $this->addedBy->name ?? null,
-            'owner_name' => $this->owner_name ?? null,
-            'owner_phone' => $this->owner_phone ?? null,
         ];
     }
 }

@@ -26,21 +26,13 @@ class Property extends Model implements HasMedia
         'view_count',
         'in_home',
         'link',
-        'latitude',
-        'longitude',
         'owner_name',
         'owner_phone',
         'owner_description',
-        'owner_address',
-        'user_id'
+        'owner_address'
     ];
 
-    protected $with = ['translations', 'addedBy'];
-
-    public function addedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    protected $with = ['translations'];
     public $translatedAttributes = [
         'title',
         'description',
@@ -73,7 +65,9 @@ class Property extends Model implements HasMedia
     public function scopeFilter($query, $offerType = null, $price = null, $typeId = null, $isAvailable = null)
     {
         if ($offerType) {
-            $query->where('offer_type', $offerType);
+            $query->whereHas('translations', function ($query) use ($offerType) {
+                $query->where('offer_type', $offerType);
+            });
         }
 
         if ($typeId) {

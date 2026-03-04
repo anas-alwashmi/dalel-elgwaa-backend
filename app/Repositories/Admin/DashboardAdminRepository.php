@@ -46,9 +46,7 @@ class DashboardAdminRepository implements CrudRepository
             return response()->json(['status' => true, 'message' => 'admin created successfully']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return response()->json(['status' => false, 'message' => __('response.server_error')], 500);
+            return response()->json(['status' => false, 'message' => $th->getMessage()], 500);
         }
     }
 
@@ -97,9 +95,7 @@ class DashboardAdminRepository implements CrudRepository
             return response()->json(['status' => true, 'message' => 'admin updated successfully']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return response()->json(['error' => __('response.server_error')], 500);
+            return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 
@@ -116,9 +112,7 @@ class DashboardAdminRepository implements CrudRepository
             $admin->delete();
             return response()->json(['status' => true, 'message' => 'admin deleted successfully']);
         } catch (\Throwable $th) {
-            report($th);
-
-            return  response()->json(['error' => __('response.server_error')], 500);
+            return  response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }

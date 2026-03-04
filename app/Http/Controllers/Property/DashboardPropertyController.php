@@ -19,14 +19,7 @@ class DashboardPropertyController extends Controller
 
     public function index()
     {
-        $user = auth('sanctum')->user();
-
-        if ($user && $user->hasRole('super_admin')) {
-            $properties = Property::paginate(10);
-        } else {
-            $properties = Property::where('user_id', $user->id ?? 0)->paginate(10);
-        }
-
+        $properties = Property::paginate(10);
         return DashboardPropertyResource::collection($properties);
     }
 
@@ -88,13 +81,10 @@ class DashboardPropertyController extends Controller
             $property->in_home = $request->input('in_home');
             $property->type_id = $request->input('type_id');
             $property->link = $request->input('link');
-            $property->latitude = $request->input('latitude');
-            $property->longitude = $request->input('longitude');
             $property->owner_name = $request->input('owner_name');
             $property->owner_phone = $request->input('owner_phone');
             $property->owner_description = $request->input('owner_description');
             $property->owner_address = $request->input('owner_address');
-            $property->user_id = auth('sanctum')->id();
 
             if ($request->hasFile('main_image')) {
                 $property->addMedia($request->file('main_image'))->toMediaCollection('main_image');
@@ -124,9 +114,7 @@ class DashboardPropertyController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 
@@ -180,8 +168,6 @@ class DashboardPropertyController extends Controller
             $property->in_home = $request->input('in_home');
             $property->type_id = $request->input('type_id');
             $property->link = $request->input('link');
-            $property->latitude = $request->input('latitude');
-            $property->longitude = $request->input('longitude');
             $property->owner_name = $request->input('owner_name');
             $property->owner_phone = $request->input('owner_phone');
             $property->owner_description = $request->input('owner_description');
@@ -210,9 +196,7 @@ class DashboardPropertyController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
 
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 
@@ -224,9 +208,7 @@ class DashboardPropertyController extends Controller
 
             return $this->sendSuccess(__('response.deleted'));
         } catch (\Throwable $th) {
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 }

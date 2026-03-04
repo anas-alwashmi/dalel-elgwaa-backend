@@ -15,10 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->environment('production')) {
-            $this->command->error('Seeders are disabled in production! Use --force flag only if you know what you are doing.');
-            return;
-        }
 
         // Delete old images and files from storage
         $this->clearDirectories();
@@ -30,9 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UserDatabaseSeeder::class);
         $this->call(AboutUsSeeder::class);
         $this->call(TypeSeeder::class);
-        $this->call(PropertySeeder::class);
+       // $this->call(PropertySeeder::class);
         $this->call(ReviewSeeder::class);
-        $this->call(ReservationSeeder::class);
+       // $this->call(ReservationSeeder::class);
         $this->call(HomeBannerSeeder::class);
         $this->call(HomeSeeder::class);
         $this->call(PageBannerSeeder::class);

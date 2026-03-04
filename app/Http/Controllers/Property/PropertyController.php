@@ -41,7 +41,9 @@ class PropertyController extends Controller
 
     public function relatedProperties(Property $property)
     {
-        $relatedProperties = Property::where('offer_type', $property->offer_type)
+        $relatedProperties = Property::whereHas('translations', function ($query) use ($property) {
+            $query->where('offer_type', $property->offer_type);
+        })
             ->where('id', '!=', $property->id)
             ->where('is_available', true)
             ->take(3)
@@ -56,7 +58,9 @@ class PropertyController extends Controller
 
     public function propertiesForRent()
     {
-        $properties = Property::where('offer_type', OfferType::Rent)
+        $properties = Property::whereHas('translations', function ($query) {
+            $query->where('offer_type', OfferType::Rent->value);
+        })
             ->where('in_home', true)
             ->get();
         return PropertyResource::collection($properties);
@@ -64,8 +68,9 @@ class PropertyController extends Controller
 
     public function propertiesForSale()
     {
-        $properties = Property::where('offer_type', OfferType::Sale)
-            ->where('in_home', true)
+        $properties = Property::whereHas('translations', function ($query) {
+            $query->where('offer_type', OfferType::Sale->value);
+        })->where('in_home', true)
             ->get();
 
         return PropertyResource::collection($properties);

@@ -46,9 +46,7 @@ class StatisticsController extends Controller
             return $this->sendSuccess(__('response.updated'));
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return response()->json(['message' => __('response.server_error')], 500);
+            throw new HttpResponseException(response()->json(['status' => false,  'message' => $th->getMessage()], 500));
         }
     }
 }

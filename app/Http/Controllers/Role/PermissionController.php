@@ -67,9 +67,7 @@ class PermissionController extends Controller
 
             return  response()->json(['message' => __('response.user_assigned_successfully')]);
         } catch (\Throwable $th) {
-            report($th);
-
-            return  response()->json(['error' => __('response.server_error')], 500);
+            return  response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }

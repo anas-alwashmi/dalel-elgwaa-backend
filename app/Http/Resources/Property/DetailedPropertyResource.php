@@ -67,8 +67,6 @@ class DetailedPropertyResource extends JsonResource
             'finishing' => $this->finishing,
             'is_available' => $this->is_available,
             'link' => $this->link,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
             'gallery' => array_merge(
                 [$this->getFirstMediaUrl('main_image')],
                 $this->getMedia('gallery')->map(function ($media) {
@@ -87,7 +85,6 @@ class DetailedPropertyResource extends JsonResource
                     'sticker' => $partner->getFirstMediaUrl('sticker') ?: null,
                 ];
             })->toArray(),
-            'added_by' => $this->addedBy->name ?? null,
         ];
     }
 }

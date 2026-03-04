@@ -52,9 +52,7 @@ class RoleController extends Controller
             return $this->sendSuccess(__('response.created'));
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 
@@ -87,9 +85,7 @@ class RoleController extends Controller
             return $this->sendSuccess(__('response.updated'));
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 
@@ -110,9 +106,7 @@ class RoleController extends Controller
             return $this->sendSuccess(__('response.deleted'));
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return $this->sendError(__('response.server_error'), [], 500);
+            return $this->sendError($th->getMessage());
         }
     }
 }

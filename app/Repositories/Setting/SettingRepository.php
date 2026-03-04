@@ -48,9 +48,7 @@ class SettingRepository
             return response()->json(['status' => true, 'message' => __('response.updated')]);
         } catch (\Throwable $th) {
             DB::rollBack();
-            report($th);
-
-            return response()->json(['error' => __('response.server_error')], 500);
+            return response()->json(['error' => $th->getMessage()], 500);
         }
     }
 }
